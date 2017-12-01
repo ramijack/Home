@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<style>
+  .chart rect {
+    fill: steelblue;
+  }
+
+  .chart text {
+    fill: black;
+    font: 10px sans-serif;
+    text-anchor: middle;
+  }
+</style>
+<script type="text/javascript" src="https://ramijack.in/D3/d3/d3.js"></script>
+
+<body>
+  <svg class="chart"></svg>
+</body>
+<script>
+  var width = 960;
+  var height = 500;
+  var data = ["A", "B", "C", "D", "E", "F"];
+
+  var x = d3.scaleBand().domain(data)
+    .range([0, width]);
+
+  var y = d3.scaleBand()
+    .domain(data)
+    .rangeRound([height, 0]);
+
+  var chart = d3.select(".chart")
+    .attr("width", width)
+    .attr("height", height);
+
+  var barWidth = width / data.length;
+
+  var bar = chart.selectAll("g")
+    .data(data)
+    .enter().append("g")
+    .attr("transform", function(d, i) {
+      return "translate(" + i * barWidth + ",0)";
+    });
+
+  bar.append("rect")
+    .attr("y", function(d) {
+      return height - y(d);
+    })
+    .attr("height", function(d) {
+      return y(d);
+    })
+    .attr("width", function(d) {
+      return barWidth;
+    });
+
+  bar.append("text")
+    .attr("x", barWidth / 2)
+    .attr("y", function(d) {
+      return height - y(d) + 3;
+    })
+    .attr("dy", ".75em")
+    .text(function(d) {
+      return d;
+    });
+  //});
+
+  function type(d) {
+    d = +d; // coerce to number
+    return d;
+  }
+</script>
+
+</html>
